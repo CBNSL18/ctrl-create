@@ -1,47 +1,18 @@
-from nlp.assessment.distress_severity import (
-    calculate_distress_score,
-    calculate_severity_score
-)
-
-from nlp.assessment.verification.human_verification import human_verification
-
-from nlp.assessment.verification.routing.case_routing import route_case
-
-from nlp.assessment.verification.routing.emergency.emergency_routing import emergency_routing
-
-from nlp.assessment.verification.routing.emergency.support.counselor_legal_aid import support_routing
+from voice_input import get_voice_input
+from speech_to_text import convert_speech_to_text
 
 
 def main():
 
     print("===== CTRL-CREATE =====")
 
-    text = input("Enter the reported text: ")
+    # Voice record karna
+    audio_file = get_voice_input()
 
-    distress_score = calculate_distress_score(text)
+    # Voice ko text mein convert karna
+    text = convert_speech_to_text(audio_file)
 
-    severity = calculate_severity_score(distress_score)
-
-    print("\nDistress Score:", distress_score)
-    print("Severity:", severity)
-
-    verified = human_verification(distress_score, severity)
-
-    if verified:
-
-        case_type = route_case()
-
-        if case_type == "emergency":
-
-            emergency_routing()
-
-        elif case_type == "past_experience":
-
-            support_routing()
-
-    else:
-
-        print("Case was not verified.")
+    print("\nFinal Text:", text)
 
 
 if __name__ == "__main__":
