@@ -1,27 +1,29 @@
-```python
 import speech_recognition as sr
 
+
 def get_voice_input():
+
     recognizer = sr.Recognizer()
 
     with sr.Microphone() as source:
+
         print("Please speak...")
+
         audio = recognizer.listen(source)
 
-    try:
-        text = recognizer.recognize_google(audio)
-        print("You said:", text)
-        return text
+    audio_file = "input.wav"
 
-    except sr.UnknownValueError:
-        print("Sorry, I could not understand the voice.")
-        return ""
+    with open(audio_file, "wb") as file:
+        file.write(audio.get_wav_data())
 
-    except sr.RequestError:
-        print("Speech recognition service is not available.")
-        return ""
+    print("Voice recorded successfully.")
+
+    return audio_file
 
 
 if __name__ == "__main__":
+
     get_voice_input()
-```
+
+
+
